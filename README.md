@@ -13,3 +13,10 @@ Dependacy packages required
 <br>Inspired and modified by these two loverly gacha players
 <br>https://github.com/EpicScipted/E7-Auto-Shop-Refresh-Custom
 <br>https://github.com/EmaOlay/E7-Auto-Shop-Refresh
+
+<br><I>Notes<I>
+<br>Hardcoded the distances in pixel between the bookmark icons and buy button
+<br>Will change it sometiem
+<br>pyautogui kinda of requires the PNG to be pixel perfect, you may play around with confidence if it doesnt dectect 
+<br>Kinda of sad that i must be on maximum 1080p screen, I will finisih up the code for findEmulatorSize and other stuff at a later stage
+<br>Leave Test.py ... not even remotely close to done with that one ...
