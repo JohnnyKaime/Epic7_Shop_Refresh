@@ -14,7 +14,7 @@ Dependacy packages required
 <br>https://github.com/EpicScipted/E7-Auto-Shop-Refresh-Custom
 <br>https://github.com/EmaOlay/E7-Auto-Shop-Refresh
 
-<br><I>Notes<I>
+<br><I>Notes<I\>
 <br>Hardcoded the distances in pixel between the bookmark icons and buy button
 <br>Will change it sometiem
 <br>pyautogui kinda of requires the PNG to be pixel perfect, you may play around with confidence if it doesnt dectect 
