@@ -18,5 +18,5 @@ Dependacy packages required
 <br>Hardcoded the distances in pixel between the bookmark icons and buy button
 <br>Will change it sometime
 <br>pyautogui kinda of requires the PNG to be pixel perfect, you may play around with confidence if it doesnt dectect 
-<br>Kinda of sad that it must be on maximum 1080p screen, I will finisih up the code for findEmulatorSize and other stuff at a later stage
+<br>Kinda of sad that it must be on maximum 1080p screen, I will finish up the code for findEmulatorSize and other stuff at a later stage
 <br>Leave Test.py ... not even remotely close to done with that one ...
