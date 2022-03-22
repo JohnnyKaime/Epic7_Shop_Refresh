@@ -13,6 +13,7 @@ def checkBookmarks():
     if Mystic_pos:
         Mystic_point=pyautogui.center(Mystic_pos)
         x = Mystic_point[0]
+        y = Mystic_point[1]
         pyautogui.click(x+800,y+50)
         #Shold use size here from FindEmulatorSize
         time.sleep(0.5)
