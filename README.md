@@ -1,22 +1,24 @@
 # Epic7_Shop_Refresh
-<br>
-Epic 7 secret shop refresh, looking mainly for Mystic and Covenant Bookmarks
+> Epic7_Shop_Refresh
 
-Dependacy packages required
-<br>#Python (Im using 3.9.7
-<br>#pip install pywin32
-<br>#pip install Pillow
-<br>#pip install keyboard
-<br>#pip install pyautogui
-<br>#pip install opencv-python
+[Epic 7](https://epic7.smilegatemegaport.com/) secret shop auto buy, looking mainly for Mystic and Covenant Bookmarks.
 
-<br>Inspired and modified by these two loverly gacha players
-<br>https://github.com/EpicScipted/E7-Auto-Shop-Refresh-Custom
-<br>https://github.com/EmaOlay/E7-Auto-Shop-Refresh
+## Instalation
 
-<br><I>Notes</I>
-<br>Hardcoded the distances in pixel between the bookmark icons and buy button
-<br>Will change it sometime
-<br>pyautogui kinda of requires the PNG to be pixel perfect, you may play around with confidence if it doesnt dectect 
-<br>Kinda of sad that it must be on maximum 1080p screen, I will finish up the code for findEmulatorSize and other stuff at a later stage
-<br>Leave Test.py ... not even remotely close to done with that one ...
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+Needs to be used in a 1080p screen
+
+```bash
+python main.py
+```
+
+## Credits
+
+- https://github.com/EpicScipted/E7-Auto-Shop-Refresh-Custom
+- https://github.com/EmaOlay/E7-Auto-Shop-Refresh
+- https://github.com/JohnnyKaime/Epic7_Shop_Refresh

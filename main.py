@@ -1,4 +1,3 @@
-from ctypes.wintypes import POINT
 import pyautogui
 import time
 import keyboard
