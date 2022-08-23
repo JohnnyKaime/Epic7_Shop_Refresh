@@ -1,3 +1,4 @@
+from multiprocessing.connection import wait
 import pyautogui
 import time
 import keyboard
@@ -72,7 +73,6 @@ def scroll():
     pyautogui.moveTo(x, y)
 
     z, w = randomPoint(-350, 0.5)
-    print(z)
     pyautogui.drag(0, z, 0.5, button="left")
 
 
@@ -107,18 +107,23 @@ def refresh(error_counter=0):
 mystic, refreshes, covenant = 0, 0, 0
 
 
+def show_stats():
+    print("Total Covenant: ", covenant)
+    print("Total Mystic: ", mystic)
+    print("Total Refreshes: ", refreshes)
+
+
 def main():
     try:
+        print("Waiting for you to focus on the Epic 7...")
+        time.sleep(5)
         while keyboard.is_pressed('q') == False:
             print("Total Covenant: ", covenant)
             check_store()
             refresh()
-
     except KeyboardInterrupt:
         print('ctrl+c interrupted')
-        print("Total Covenant: ", covenant)
-        print("Total Mystic: ", mystic)
-        print("Total Refreshes: ", refreshes)
+    show_stats()
 
 
 if __name__ == '__main__':
