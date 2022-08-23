@@ -35,7 +35,8 @@ def checkBookmarks():
 
 
 def scroll():
-    pyautogui.scroll(-10)
+    pyautogui.moveTo(1263, 590)
+    pyautogui.drag(0, -350, 0.5, button="left") 
     time.sleep(1.5)
 
 def Refresh():
@@ -56,6 +57,7 @@ mystic,autos,covenant = 0,0,0
 
 try:
     while keyboard.is_pressed('q') == False:
+        print("Total Covenant: ",covenant)
         Refresh()
 except KeyboardInterrupt:
     print('ctrl+c interrupted')
