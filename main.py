@@ -3,6 +3,8 @@ import pyautogui
 import time
 import keyboard
 import math
+import os
+from threading import Thread
 from random import random
 
 
@@ -36,6 +38,10 @@ def locate_image_on_screen(image_path):
 
 
 def check_bookmarks():
+    global bought
+    global covenant
+    global mystic
+
     mystic_pos = locate_image_on_screen("Pics\\mystic.png")
     coven_pos = locate_image_on_screen("Pics\\covenant.png")
 
@@ -49,7 +55,7 @@ def check_bookmarks():
             "Pics\\Buy_button_Mystic.png")
         random_weighted_click_pos(buy_button_mystic_pos)
 
-        global mystic
+        bought = True
         mystic += 1
         time.sleep(1)
 
@@ -63,7 +69,7 @@ def check_bookmarks():
             "Pics\\Buy_button_Covenant.png")
         random_weighted_click_pos(buy_button_covenant_pos)
 
-        global covenant
+        bought = True
         covenant += 1
         time.sleep(1)
 
@@ -78,8 +84,24 @@ def scroll():
 
 def check_store():
     check_bookmarks()
-    scroll()
-    check_bookmarks()
+
+    global bought
+    if (bought == False):
+        scroll()
+        check_bookmarks()
+    else:
+        bought = False
+
+
+def confirm_refresh():
+    confirm_pos = locate_image_on_screen("Pics\\confirm button.png")
+    random_weighted_click_pos(confirm_pos)
+
+    time.sleep(.2)
+
+    confirm_pos_again = locate_image_on_screen("Pics\\confirm button.png")
+    if (confirm_pos_again != None):
+        confirm_refresh()
 
 
 def refresh(error_counter=0):
@@ -89,8 +111,7 @@ def refresh(error_counter=0):
 
         time.sleep(1)
 
-        confirm_pos = locate_image_on_screen("Pics\\confirm button.png")
-        random_weighted_click_pos(confirm_pos)
+        confirm_refresh()
 
         global refreshes
         refreshes += 1
@@ -104,21 +125,26 @@ def refresh(error_counter=0):
                 "Will not try to refresh again, have tried 3 times")
 
 
-mystic, refreshes, covenant = 0, 0, 0
+mystic = 0
+refreshes = 0
+covenant = 0
+bought = 0
 
 
 def show_stats():
+    os.system('cls||clear')
     print("Total Covenant: ", covenant)
     print("Total Mystic: ", mystic)
     print("Total Refreshes: ", refreshes)
+    print("Hold Q to stop script.")
 
 
 def main():
     try:
-        print("Waiting for you to focus on the Epic 7...")
+        print("Waiting 5 seconds to start, ensure epic 7 is in fullscreen on the main monitor...")
         time.sleep(5)
         while keyboard.is_pressed('q') == False:
-            print("Total Covenant: ", covenant)
+            show_stats()
             check_store()
             refresh()
     except KeyboardInterrupt:
