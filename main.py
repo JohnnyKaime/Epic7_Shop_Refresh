@@ -1,40 +1,7 @@
-from multiprocessing.connection import wait
-import pyautogui
 import time
-import keyboard
-import math
-import os
-from threading import Thread
-from random import random
-
-
-# https://stackoverflow.com/questions/23700822/weighted-random-coordinates
-def randomPoint(aroundX, aroundY, scale=1, density=2):
-    angle = random()*2*math.pi
-
-    x = random()
-    if x == 0:
-        x = 0.0000001
-
-    distance = scale * (pow(x, -1.0/density) - 1)
-    return (aroundX + distance * math.sin(angle),
-            aroundY + distance * math.cos(angle))
-
-
-def random_weighted_click(aroundX, aroundY):
-    x, y = randomPoint(aroundX, aroundY)
-    pyautogui.click(x, y)
-
-
-def random_weighted_click_pos(pos):
-    point = pyautogui.center(pos)
-    random_weighted_click(point[0], point[1])
-
-
-def locate_image_on_screen(image_path):
-    pos = pyautogui.locateOnScreen(
-        image_path, grayscale=False, confidence=0.7)
-    return pos
+import templates
+from utils import helper
+from utils.devices import get_device, setup_device
 
 
 def check_bookmarks():
@@ -42,115 +9,85 @@ def check_bookmarks():
     global covenant
     global mystic
 
-    mystic_pos = locate_image_on_screen("Pics\\mystic.png")
-    coven_pos = locate_image_on_screen("Pics\\covenant.png")
+    mystic_pos = helper.check_image(templates.mystic)
+    coven_pos = helper.check_image(templates.covenant)
 
-    if mystic_pos:
-        mystic_point = pyautogui.center(mystic_pos)
-        random_weighted_click(mystic_point[0]+800, mystic_point[1]+50)
+    if mystic_pos is not None:
+        x, y = helper.get_position_of_image(mystic_pos)
+        helper.click_position(x + 800, y + 100, 1)
 
-        time.sleep(0.5)
-
-        buy_button_mystic_pos = locate_image_on_screen(
-            "Pics\\Buy_button_Mystic.png")
-        random_weighted_click_pos(buy_button_mystic_pos)
+        helper.click_image(templates.buy_button_mystic, 1)
 
         bought = True
         mystic += 1
-        time.sleep(1)
 
-    if coven_pos:
-        coven_point = pyautogui.center(coven_pos)
-        random_weighted_click(coven_point[0]+800, coven_point[1]+50)
+    if coven_pos is not None:
+        x, y = helper.get_position_of_image(coven_pos)
+        helper.click_position(x + 800, y + 100, 1)
 
-        time.sleep(0.5)
-
-        buy_button_covenant_pos = locate_image_on_screen(
-            "Pics\\Buy_button_Covenant.png")
-        random_weighted_click_pos(buy_button_covenant_pos)
+        helper.click_image(templates.buy_button_covenant, 1)
 
         bought = True
         covenant += 1
-        time.sleep(1)
 
 
 def scroll():
-    x, y = randomPoint(1263, 590)
-    pyautogui.moveTo(x, y)
-
-    z, w = randomPoint(-350, 0.5)
-    pyautogui.drag(0, z, 0.5, button="left")
+    device = get_device()
+    device.shell(
+        "input touchscreen swipe 1200 700 1200 300 200")
 
 
 def check_store():
     check_bookmarks()
 
     global bought
-    if (bought == False):
+    if bought is False:
         scroll()
         check_bookmarks()
-    else:
-        bought = False
-
-
-def confirm_refresh():
-    confirm_pos = locate_image_on_screen("Pics\\confirm button.png")
-    random_weighted_click_pos(confirm_pos)
-
-    time.sleep(.2)
-
-    confirm_pos_again = locate_image_on_screen("Pics\\confirm button.png")
-    if (confirm_pos_again != None):
-        confirm_refresh()
+    bought = False
 
 
 def refresh(error_counter=0):
-    try:
-        refresh_button_pos = locate_image_on_screen("Pics\\refresh_button.png")
-        random_weighted_click_pos(refresh_button_pos)
-
-        time.sleep(1)
-
-        confirm_refresh()
-
-        global refreshes
-        refreshes += 1
-
-        time.sleep(1)
-    except:
-        if error_counter < 3:
+    helper.click_image(templates.refresh_button)
+    helper.click_image(templates.confirm_button, 1)
+    time.sleep(0.5)
+    confirm_button = helper.check_image(templates.confirm_button)
+    if confirm_button is not None:
+        if error_counter < 5:
             refresh(error_counter + 1)
         else:
-            raise Exception(
-                "Will not try to refresh again, have tried 3 times")
+            print("Error: Could not refresh")
+            exit(1)
+    else:
+        global refreshes
+        refreshes += 1
 
 
 mystic = 0
 refreshes = 0
 covenant = 0
-bought = 0
+bought = False
 
 
 def show_stats():
-    os.system('cls||clear')
-    print("Total Covenant: ", covenant)
-    print("Total Mystic: ", mystic)
-    print("Total Refreshes: ", refreshes)
-    print("Hold Q to stop script.")
+    print("="*20)
+    print("Total Covenant: " + str(covenant))
+    print("Total Mystic: " + str(mystic))
+    print("Total Refreshes: " + str(refreshes))
+    print("="*20)
 
 
 def main():
     try:
-        print("Waiting 5 seconds to start, ensure epic 7 is in fullscreen on the main monitor...")
-        time.sleep(5)
-        while keyboard.is_pressed('q') == False:
-            show_stats()
+        while True:
             check_store()
             refresh()
+            show_stats()
     except KeyboardInterrupt:
-        print('ctrl+c interrupted')
-    show_stats()
+        print("ctrol-c pressed")
+        exit(1)
 
 
 if __name__ == '__main__':
+    setup_device()
     main()
