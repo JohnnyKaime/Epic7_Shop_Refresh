@@ -1,4 +1,5 @@
 import time
+from templates import Template
 from utils.devices import get_device
 import base64
 import time
@@ -36,14 +37,16 @@ def get_position_of_image(result):
     return position_x, position_y
 
 
-def check_image(template):
+def check_image(template: Template):
     device = get_device()
     png_screenshot_data = device.shell("screencap -p | busybox base64")
     png_screenshot_data = base64.b64decode(png_screenshot_data)
     images = cv2.imdecode(np.frombuffer(png_screenshot_data, np.uint8), 0)
-    result = cv2.matchTemplate(images, template, cv2.TM_CCOEFF_NORMED)
+    result = cv2.matchTemplate(images, template['image'], cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
-    if max_val > 0.8:
+    # print(f"Checked {template['name']}, percentage: {max_val}")
+
+    if max_val > 0.7:
         return result
     else:
         return None
